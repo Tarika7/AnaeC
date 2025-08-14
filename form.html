@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AnaeCheck Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        label { font-weight: bold; }
+        input, select, textarea { margin-bottom: 15px; width: 300px; padding: 5px; }
+        .section { margin-top: 30px; }
+        .timer-display { font-weight: bold; margin-top: 10px; }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ane.css') }}">
+</head>
+<body>
+    <h1>AnaeCheck — Anaemia Screening Form</h1>
+    <form method="POST" action="/submit" enctype="multipart/form-data">
+
+        <!-- Basic Info -->
+        <div class="section">
+            <label>Full Name:</label><br />
+            <input type="text" name="full_name" required /><br />
+
+            <label>Gender:</label><br />
+            <select name="gender" required>
+                <option value="">Select</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+            </select><br />
+
+            <label>Age:</label><br />
+            <input type="number" name="age" required /><br />
+        </div>
+
+        <!-- Questionnaire -->
+        <div class="section">
+            <label>Menstrual History:</label><br />
+            <select name="menstrual_history">
+                <option value="">Select</option>
+                <option value="Regular">Regular</option>
+                <option value="Irregular">Irregular</option>
+                <option value="Not Applicable">Not Applicable</option>
+            </select><br />
+
+            <label>Pregnancy Status:</label><br />
+            <select name="pregnancy_status">
+                <option value="">Select</option>
+                <option value="Pregnant">Pregnant</option>
+                <option value="Not Pregnant">Not Pregnant</option>
+                <option value="Not Applicable">Not Applicable</option>
+            </select><br />
+
+            <label>Diet Type:</label><br />
+            <select name="diet_type">
+                <option value="">Select</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Non-Vegetarian">Non-Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+            </select><br />
+
+            <label>Smoking Status:</label><br />
+            <select name="smoking_status">
+                <option value="">Select</option>
+                <option value="Smoker">Smoker</option>
+                <option value="Non-Smoker">Non-Smoker</option>
+            </select><br />
+
+            <label>Recent Blood Donation:</label><br />
+            <select name="recent_blood_donation">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br />
+
+            <label>Past Anaemia Diagnosis:</label><br />
+            <select name="past_anaemia_diagnosis">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br />
+
+            <label>Fatigue Frequency:</label><br />
+            <select name="fatigue_frequency">
+                <option value="">Select</option>
+                <option value="Often">Often</option>
+                <option value="Sometimes">Sometimes</option>
+                <option value="Rarely">Rarely</option>
+            </select><br />
+
+            <label>Dizziness Frequency:</label><br />
+            <select name="dizziness_frequency">
+                <option value="">Select</option>
+                <option value="Often">Often</option>
+                <option value="Sometimes">Sometimes</option>
+                <option value="Rarely">Rarely</option>
+            </select><br />
+
+            <label>Headache Frequency:</label><br />
+            <select name="headache_frequency">
+                <option value="">Select</option>
+                <option value="Often">Often</option>
+                <option value="Sometimes">Sometimes</option>
+                <option value="Rarely">Rarely</option>
+            </select><br />
+
+            <label>Cold Sensitivity:</label><br />
+            <select name="cold_sensitivity">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br />
+
+            <label>Pica Habit (eating non-food items):</label><br />
+            <select name="pica_habit">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><br />
+        </div>
+
+        <!-- Breath Hold Timer -->
+        <div class="section">
+            <h3>Breath Hold Timer</h3>
+            <p>Take a deep breath and click "Start". Hold your breath as long as you can, then click "Stop".</p>
+            <button type="button" onclick="startBreathTimer()">Start</button>
+            <button type="button" onclick="stopBreathTimer()">Stop</button>
+            <div class="timer-display" id="breathTimerDisplay"></div>
+            <input type="hidden" name="breath_hold_timer" id="breath_hold_timer" />
+        </div>
+
+        <!-- Heart Rate Measurement -->
+        <div class="section">
+            <h3>Heart Rate Measurement</h3>
+            <p>Find your pulse (wrist or neck). Click "Start Timer" and count your beats for 15 seconds.</p>
+            <button type="button" onclick="startPulseTimer()">Start 15s Timer</button>
+            <div class="timer-display" id="pulseTimerDisplay"></div><br />
+            <label>Enter number of beats counted in 15 seconds:</label><br />
+            <input type="number" name="pulse_count_15s" min="0" /><br />
+        </div>
+
+        <!-- BMI Section -->
+        <div class="section">
+            <h3>BMI Calculator</h3>
+            <label>Height:</label><br />
+            <input type="number" name="height_input" step="0.1" required />
+            <select name="height_unit" required>
+                <option value="cm">cm</option>
+                <option value="inches">inches</option>
+            </select><br />
+
+            <label>Weight (in kg):</label><br />
+            <input type="number" name="weight_kg" step="0.1" required /><br />
+        </div>
+
+        <!-- Image Uploads -->
+        <div class="section">
+            <h3>Upload Images</h3>
+            <label>Eye Image (used for prediction):</label><br />
+            <input type="file" name="eye_image" accept="image/*" required /><br /><br />
+
+            <label>Nail Image (saved for future analysis):</label><br />
+            <input type="file" name="nail_image" accept="image/*" /><br />
+        </div>
+
+        <!-- Submit -->
+        <div class="section">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        // Breath Hold Timer
+        let breathStartTime = null;
+        function startBreathTimer() {
+            breathStartTime = new Date();
+            document.getElementById("breathTimerDisplay").textContent = "Timer running...";
+        }
+        function stopBreathTimer() {
+            if (breathStartTime) {
+                const duration = Math.floor((new Date() - breathStartTime) / 1000);
+                document.getElementById("breath_hold_timer").value = duration;
+                document.getElementById("breathTimerDisplay").textContent = `You held your breath for ${duration} seconds.`;
+            }
+        }
+
+        // Pulse Timer
+        function startPulseTimer() {
+            let timeLeft = 15;
+            const display = document.getElementById("pulseTimerDisplay");
+            display.textContent = `Time left: ${timeLeft}s`;
+            const interval = setInterval(() => {
+                timeLeft--;
+                display.textContent = `Time left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    display.textContent = "Time's up! Enter your pulse count.";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

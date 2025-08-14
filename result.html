@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AnaeCheck Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2, h3 { color: #2c3e50; }
+        .section { margin-top: 30px; }
+        ul { margin-top: 10px; }
+        .highlight { font-weight: bold; color: #e74c3c; }
+        img { margin-top: 10px; max-width: 300px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>AnaeCheck Results</h1>
+
+    <!-- Basic Info -->
+    <div class="section">
+        <h2>User Information</h2>
+        <p><strong>Name:</strong> {{ data['Full Name'] }}</p>
+        <p><strong>Age:</strong> {{ data['Age'] }}</p>
+        <p><strong>Gender:</strong> {{ data['Gender'] }}</p>
+    </div>
+
+    <!-- Vital Signs -->
+    <div class="section">
+        <h2>Vital Signs</h2>
+        <p><strong>Breath Hold Duration:</strong> {{ data['Breath Hold Timer (s)'] }} seconds</p>
+        <p><strong>Estimated Heart Rate (BPM):</strong> {{ data['Estimated Heart Rate (BPM)'] }}</p>
+        <p><strong>BMI:</strong> {{ data['BMI'] }} ({{ data['BMI Category'] }})</p>
+    </div>
+
+    <!-- AI Prediction -->
+    <div class="section">
+        <h2>AI Prediction</h2>
+        <p><strong>Result:</strong> <span class="highlight">{{ data['AI Prediction'] }}</span></p>
+        <p><strong>Advice:</strong> {{ data['Advice Message'] }}</p>
+
+        <h3>✅ Recommended Actions:</h3>
+        <ul>
+            {% for item in data['Recommended Actions'] %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>🚫 Avoid These:</h3>
+        <ul>
+            {% for item in data['Avoid These'] %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Uploaded Images -->
+    <div class="section">
+        <h2>Uploaded Images</h2>
+        {% if data['Eye Image Filename'] %}
+            <p><strong>Eye Image (used for prediction):</strong></p>
+            <img src="{{ url_for('static', filename='uploads/' + data['Eye Image Filename']) }}" alt="Eye Image" />
+        {% endif %}
+
+        {% if data['Nail Image Filename'] %}
+            <p><strong>Nail Image (saved for future analysis):</strong></p>
+            <img src="{{ url_for('static', filename='uploads/' + data['Nail Image Filename']) }}" alt="Nail Image" />
+        {% endif %}
+    </div>
+</body>
+</html>
